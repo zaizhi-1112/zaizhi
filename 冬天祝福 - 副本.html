@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="description" content="立冬祝福 - 温暖治愈的冬日祝福体验">
+    <meta name="theme-color" content="#667eea">
+    <title>冬天祝福（宰治）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #a8edea 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Entrance Popup */
+        .entrance-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: popupEnter 0.6s ease-out;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes popupEnter {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup-content h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .popup-content p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .claim-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .claim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Blessing Card */
+        .blessing-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 20px 30px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            animation: floatUp 6s linear forwards;
+            pointer-events: auto;
+            white-space: nowrap;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.8) rotate(0deg);
+            }
+            3% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(var(--random-rotation));
+            }
+            97% {
+                opacity: 1;
+                transform: translateY(-100vh) scale(1) rotate(var(--random-rotation));
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-110vh) scale(0.9) rotate(var(--random-rotation));
+            }
+        }
+
+        /* Click Feedback */
+        .click-feedback {
+            position: fixed;
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 999;
+            animation: feedbackFloat 1s ease-out forwards;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes feedbackFloat {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Blessing Rain Button */
+        .blessing-rain-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .blessing-rain-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Snow Particle */
+        .snowflake {
+            position: fixed;
+            color: white;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Easter Egg Popup */
+        .easter-egg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            display: none;
+            max-width: 90%;
+        }
+
+        .easter-egg h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .easter-egg p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .close-egg {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(10px);
+            min-width: 320px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+            font-size: 12px;
+            display: none;
+        }
+
+        .stat-item {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .stat-label {
+            color: #a8edea;
+            font-weight: 600;
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .user-item .user-nickname {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .user-item .user-time {
+            color: #a8edea;
+            font-size: 11px;
+        }
+
+        .user-item .user-stats {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .music-btn {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .music-btn.playing {
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .nickname-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 250px;
+        }
+
+        .nickname-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .nickname-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .popup-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .popup-content h1 {
+                font-size: 20px;
+                line-height: 1.4;
+            }
+
+            .popup-content p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .claim-btn {
+                padding: 14px 40px;
+                font-size: 16px;
+                min-height: 48px;
+                min-width: 120px;
+            }
+
+            .blessing-card {
+                font-size: 14px;
+                padding: 12px 16px;
+            }
+
+            .blessing-rain-btn {
+                font-size: 14px;
+                padding: 14px 32px;
+                bottom: 20px;
+                min-height: 48px;
+            }
+
+            .music-control {
+                top: 10px;
+                right: 10px;
+            }
+
+            .music-btn {
+                font-size: 12px;
+                padding: 10px 18px;
+                min-height: 40px;
+            }
+
+            .admin-panel {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                min-width: unset;
+                max-width: unset;
+                max-height: 70vh;
+            }
+
+            .admin-toggle {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .easter-egg {
+                padding: 30px 20px;
+            }
+
+            .easter-egg h2 {
+                font-size: 20px;
+            }
+
+            .easter-egg p {
+                font-size: 14px;
+            }
+
+            .close-egg {
+                padding: 12px 30px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+
+            .nickname-input {
+                width: 100%;
+                max-width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+                min-height: 48px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .popup-content {
+                padding: 25px 15px;
+                margin: 15px;
+                border-radius: 20px;
+            }
+
+            .popup-content h1 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .popup-content p {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            .claim-btn {
+                padding: 12px 35px;
+                font-size: 15px;
+            }
+
+            .blessing-rain-btn {
+                font-size: 13px;
+                padding: 12px 28px;
+            }
+
+            .blessing-card {
+                font-size: 13px;
+                padding: 10px 14px;
+                white-space: normal;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Entrance Popup -->
+    <div class="entrance-popup" id="entrancePopup">
+        <div class="popup-content">
+            <h1>🎁 宰治送你一份冬天的小小的礼物</h1>
+            <p>冬天啦，让好运和温暖一起到你身边～<br>你若觉得有趣，欢迎链接我V：zaizhi1112</p>
+            <input type="text" class="nickname-input" id="nicknameInput" placeholder="请输入你的昵称">
+            <br>
+            <button class="claim-btn" id="claimBtn">点击领取</button>
+        </div>
+    </div>
+
+    <!-- Blessing Rain Button -->
+    <button class="blessing-rain-btn" id="blessingRainBtn" style="display: none;">再来一点福气 ✨</button>
+
+    <!-- Easter Egg Popup -->
+    <div class="easter-egg" id="easterEgg">
+        <h2 id="eggTitle"></h2>
+        <p id="eggMessage"></p>
+        <button class="close-egg" onclick="closeEasterEgg()">温暖接收 💖</button>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl" style="display: none;">
+        <button class="music-btn" id="musicBtn" title="音乐控制">🎵</button>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="winter-music.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
+
+    <!-- Admin Panel -->
+    <button class="admin-toggle" id="adminToggle" title="Admin">👑</button>
+    <div class="admin-panel" id="adminPanel">
+        <h3 style="margin-bottom: 15px; color: #a8edea;">📊 统计面板</h3>
+
+        <!-- Current User Stats -->
+        <div class="stats-section">
+            <h4 style="color: #fff; margin: 15px 0 10px 0; font-size: 14px;">当前用户</h4>
+            <div class="stat-item"><span class="stat-label">昵称:</span> <span id="statNickname">-</span></div>
+            <div class="stat-item"><span class="stat-label">停留时间:</span> <span id="statTime">0s</span></div>
+            <div class="stat-item"><span class="stat-label">点击次数:</span> <span id="statClicks">0</span></div>
+            <div class="stat-item"><span class="stat-label">爆发按钮:</span> <span id="statRains">0</span></div>
+            <div class="stat-item"><span class="stat-label">祝福条数:</span> <span id="statBlessings">0</span></div>
+        </div>
+
+        <!-- Total Stats -->
+        <div class="stats-section" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 15px;">
+            <h4 style="color: #fff; margin: 10px 0; font-size: 14px;">总数据</h4>
+            <div class="stat-item"><span class="stat-label">总用户数:</span> <span id="statTotalUsers">0</span></div>
+            <div class="stat-item"><span class="stat-label">总停留时间:</span> <span id="statTotalTime">0s</span></div>
+            <div class="stat-item"><span class="stat-label">总点击次数:</span> <span id="statTotalClicks">0</span></div>
+            <div class="stat-item"><span class="stat-label">总爆发次数:</span> <span id="statTotalRains">0</span></div>
+            <div class="stat-item"><span class="stat-label">总祝福条数:</span> <span id="statTotalBlessings">0</span></div>
+        </div>
+
+        <!-- User List -->
+        <div class="stats-section" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 15px; max-height: 200px; overflow-y: auto;">
+            <h4 style="color: #fff; margin: 10px 0; font-size: 14px;">用户列表 <span style="font-size: 11px; color: #a8edea;">(共<span id="userCount">0</span>人)</span></h4>
+            <div id="userList" class="user-list"></div>
+        </div>
+
+        <!-- Export Button -->
+        <div style="margin-top: 15px; text-align: center;">
+            <button class="export-btn" id="exportBtn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 12px; width: 100%;">📊 导出Excel</button>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let nickname = '';
+        let userStats = {
+            startTime: null,
+            clickCount: 0,
+            rainCount: 0,
+            blessingCount: 0,
+            blessingTimes: []
+        };
+
+        let globalStats = {
+            users: [],
+            totalTime: 0,
+            totalClicks: 0,
+            totalRains: 0,
+            totalBlessings: 0
+        };
+        let currentUserData = null;
+        let blessingInterval;
+        let isGenerating = false;
+        let blessingCount = 0;
+        let stayTimeInterval;
+        let easterEgg66Shown = false;
+        let easterEggLongShown = false;
+        let adminClickCount = 0;
+
+        // CLOUD CONFIGURATION - Replace with your cloud storage credentials
+        // For demonstration, using localStorage with cross-device sync via URL sharing
+        // In production, replace with: Firebase, Supabase, or your own API
+        const USE_CLOUD_STORAGE = false; // Set to true when using cloud storage
+        const CLOUD_STORAGE_URL = 'YOUR_API_ENDPOINT_HERE'; // Your cloud storage API endpoint
+
+        // Recalculate total stats from all users
+        function recalculateTotalStats() {
+            globalStats.totalTime = globalStats.users.reduce((sum, user) => sum + (user.stayTime || 0), 0);
+            globalStats.totalClicks = globalStats.users.reduce((sum, user) => sum + (user.clickCount || 0), 0);
+            globalStats.totalRains = globalStats.users.reduce((sum, user) => sum + (user.rainCount || 0), 0);
+            globalStats.totalBlessings = globalStats.users.reduce((sum, user) => sum + (user.blessingCount || 0), 0);
+        }
+
+        // Recalculate on page load
+        recalculateTotalStats();
+
+        // Blessing Library (30 blessings)
+        const blessings = [
+            '冬天快乐，愿你的生活如雪花般纯洁美好～ ❄️✨',
+            '愿你在这个冬天收到满满的温暖与爱意 ✨💕',
+            '冬天已至，好运和幸福正在路上奔向你～ 🚀💝',
+            '愿你的冬天不寒冷，因为有我真挚的祝福 💖🔥',
+            '冬天快乐！愿你的每一天都像阳光一样温暖～ ☀️😊',
+            '在这个美好的冬天，愿所有美好都与你环环相扣～ 🧣💞',
+            '冬天时节，愿你被世界温柔以待～ 🌙💤',
+            '愿你的生活像冬日里的热茶，温暖而醇香 ☕🍵',
+            '冬天快乐！让祝福像雪花一样飘进你的心里 ❄️💙',
+            '愿你在这个冬天，收获比往年更多的温暖～ 🎁🌟',
+            '冬天到了，愿你的笑容如春天般灿烂～ 😊🌸',
+            '愿这份祝福能驱散你心中的所有阴霾～ 🌈☁️',
+            '冬天快乐！愿你的生活永远充满阳光和希望 ☀️🌻',
+            '在这个特殊的日子里，愿你被所有美好拥抱～ 🤗💐',
+            '愿你的冬天充满诗意，生活满是惊喜～ 📖🎭',
+            '冬天快乐！每一天都要元气满满哦～ ⚡💪',
+            '愿你在这个冬季，所有梦想都能如愿以偿～ 🎯🌠',
+            '冬天时节，温暖常伴，好运常在～ 🍎🍊',
+            '愿你像冬日里的暖阳，照亮自己的同时也温暖他人～ ☀️👫',
+            '冬天快乐！愿你被岁月温柔以待～ 🕰️💕',
+            '在这个美好的季节，愿所有幸福都向你走来～ 🎊🥳',
+            '愿你的冬天没有遗憾，只有满满的收获与感动～ 🧺💎',
+            '冬天快乐！愿你每天都有小确幸～ 🐱☀️',
+            '愿你在这个冬天，感受生活中所有的小美好～ 🌺🎀',
+            '冬天到了，记得保暖，也要保持好心情哦～ 🧥😄',
+            '愿你的生活像雪花一样轻盈而美好～ ❄️🕊️',
+            '冬天快乐！愿你永远保持一颗温暖的心 💝💓',
+            '在这个冬天，愿你收获满满的祝福与感动～ 🎁💖',
+            '愿你在这个冬季，遇见更好的自己～ 🔮✨',
+            '冬天快乐！让温暖和快乐填满你的整个冬天～ 🔥🎉'
+        ];
+
+        // URL Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlName = urlParams.get('name');
+        const urlFrom = urlParams.get('from');
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            if (urlName) {
+                updatePersonalizedBlessings();
+            }
+            // Load data from cloud or localStorage
+            await loadGlobalStats();
+        });
+
+        // Update total stats display
+        function updateTotalStatsDisplay() {
+            const statTotalUsers = document.getElementById('statTotalUsers');
+            const statTotalTime = document.getElementById('statTotalTime');
+            const statTotalClicks = document.getElementById('statTotalClicks');
+            const statTotalRains = document.getElementById('statTotalRains');
+            const statTotalBlessings = document.getElementById('statTotalBlessings');
+
+            if (statTotalUsers) statTotalUsers.textContent = globalStats.users.length;
+            if (statTotalTime) statTotalTime.textContent = globalStats.totalTime + 's';
+            if (statTotalClicks) statTotalClicks.textContent = globalStats.totalClicks;
+            if (statTotalRains) statTotalRains.textContent = globalStats.totalRains;
+            if (statTotalBlessings) statTotalBlessings.textContent = globalStats.totalBlessings;
+        }
+
+        // Initialize event listeners when DOM is ready
+        function initializeEventListeners() {
+            // Entrance Button Click
+            const claimBtn = document.getElementById('claimBtn');
+            if (claimBtn) {
+                claimBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    nickname = document.getElementById('nicknameInput').value || '亲爱的朋友';
+                    userStats.startTime = Date.now();
+
+                    // Create user data record
+                    currentUserData = {
+                        id: Date.now(),
+                        nickname: nickname,
+                        enterTime: new Date().toLocaleString('zh-CN'),
+                        startTime: userStats.startTime,
+                        clickCount: 0,
+                        rainCount: 0,
+                        blessingCount: 0
+                    };
+
+                    // Hide popup
+                    const popup = document.getElementById('entrancePopup');
+                    if (popup) popup.style.display = 'none';
+
+                    // Show button
+                    const blessingBtn = document.getElementById('blessingRainBtn');
+                    if (blessingBtn) blessingBtn.style.display = 'block';
+
+                    // Show music control
+                    const musicControl = document.getElementById('musicControl');
+                    if (musicControl) musicControl.style.display = 'block';
+
+                    // Auto-play background music
+                    const audio = document.getElementById('bgMusic');
+                    if (audio) {
+                        audio.volume = 0.5;
+                        audio.play().then(() => {
+                            const musicBtn = document.getElementById('musicBtn');
+                            if (musicBtn) {
+                                musicBtn.textContent = '🔇';
+                                musicBtn.classList.add('playing');
+                            }
+                        }).catch(error => {
+                            console.log('音频播放失败:', error);
+                        });
+                    }
+
+                    // Start generating blessings
+                    startBlessingGeneration();
+
+                    // Start stay time tracking
+                    startStayTimeTracking();
+
+                    // Update nickname in stats
+                    const statNickname = document.getElementById('statNickname');
+                    if (statNickname) statNickname.textContent = nickname;
+                });
+            }
+
+            // Music Button Click
+            const musicBtn = document.getElementById('musicBtn');
+            if (musicBtn) {
+                musicBtn.addEventListener('click', () => {
+                    const audio = document.getElementById('bgMusic');
+                    const musicBtn = document.getElementById('musicBtn');
+
+                    if (audio.paused) {
+                        audio.play().then(() => {
+                            musicBtn.textContent = '🔇';
+                            musicBtn.classList.add('playing');
+                        }).catch(error => {
+                            console.log('音频播放失败:', error);
+                            alert('音乐播放失败，请检查音乐文件是否存在');
+                        });
+                    } else {
+                        audio.pause();
+                        musicBtn.textContent = '🎵';
+                        musicBtn.classList.remove('playing');
+                    }
+                });
+            }
+
+            // Blessing Rain Button
+            const blessingRainBtn = document.getElementById('blessingRainBtn');
+            if (blessingRainBtn) {
+                blessingRainBtn.addEventListener('click', () => {
+                    userStats.rainCount++;
+                    if (currentUserData) {
+                        currentUserData.rainCount++;
+                    }
+                    createBlessingRain();
+                    triggerBlessingEasterEgg();
+                });
+            }
+
+            // Admin Panel Toggle
+            const adminToggle = document.getElementById('adminToggle');
+            if (adminToggle) {
+                adminToggle.addEventListener('click', () => {
+                    adminClickCount++;
+                    if (adminClickCount >= 10) {
+                        showAdminLogin();
+                    }
+                });
+            }
+
+            // Export Excel Button
+            const exportBtn = document.getElementById('exportBtn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    exportToExcel();
+                });
+            }
+
+            // Show admin toggle in bottom right
+            setTimeout(() => {
+                const adminToggle = document.getElementById('adminToggle');
+                if (adminToggle) adminToggle.style.display = 'block';
+            }, 5000);
+        }
+
+        // Initialize when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeEventListeners);
+        } else {
+            initializeEventListeners();
+        }
+
+        // Save data when page is about to unload or refresh
+        window.addEventListener('beforeunload', () => {
+            // Check if we have user data that hasn't been saved yet
+            if (userStats.startTime && currentUserData) {
+                saveCurrentUserData();
+            }
+        });
+
+        // Also save data periodically
+        setInterval(() => {
+            if (userStats.startTime && currentUserData) {
+                const elapsed = Math.floor((Date.now() - userStats.startTime) / 1000);
+                currentUserData.stayTime = elapsed;
+                currentUserData.blessingCount = userStats.blessingCount;
+            }
+        }, 5000);
+
+        // Start Blessing Generation
+        function startBlessingGeneration() {
+            if (isGenerating) return;
+            isGenerating = true;
+
+            blessingInterval = setInterval(() => {
+                createBlessing();
+            }, 300 + Math.random() * 200);
+
+            createSnowflakes();
+        }
+
+        // Create Blessing Card
+        function createBlessing(forcePosition = null) {
+            const card = document.createElement('div');
+            card.className = 'blessing-card';
+
+            // Get random blessing
+            let blessing = blessings[Math.floor(Math.random() * blessings.length)];
+
+            // Personalize if name exists
+            if (nickname && nickname !== '亲爱的朋友') {
+                blessing = `${nickname}，${blessing.replace(/^[愿你]/, '')}`;
+            }
+
+            // Personalize from URL
+            if (urlFrom) {
+                blessing += ` (来自${urlFrom}的温暖祝福)`;
+            }
+
+            card.textContent = blessing;
+
+            // Calculate position
+            let randomX, randomY;
+            const cardWidth = 260; // Approximate card width (increased for emoji)
+            const cardHeight = 70; // Approximate card height
+            const existingCards = document.querySelectorAll('.blessing-card');
+            const margin = 30; // Minimum margin between cards
+
+            if (forcePosition) {
+                // Use provided position (for blessing rain), but still check for overlap
+                let attempts = 0;
+                const maxAttempts = 20;
+                do {
+                    randomX = forcePosition.x;
+                    randomY = forcePosition.y;
+
+                    // Check if this position overlaps with existing cards
+                    let overlaps = false;
+                    for (let i = 0; i < existingCards.length; i++) {
+                        const existingCard = existingCards[i];
+                        const existingRect = existingCard.getBoundingClientRect();
+                        const newRect = {
+                            left: randomX,
+                            top: randomY,
+                            right: randomX + cardWidth,
+                            bottom: randomY + cardHeight
+                        };
+
+                        // Check if rectangles overlap
+                        if (!(newRect.right < existingRect.left - margin ||
+                              newRect.left > existingRect.right + margin ||
+                              newRect.bottom < existingRect.top - margin ||
+                              newRect.top > existingRect.bottom + margin)) {
+                            overlaps = true;
+                            // Try a slightly different position
+                            randomX = Math.max(margin, randomX + (Math.random() - 0.5) * 100);
+                            break;
+                        }
+                    }
+
+                    if (!overlaps) break;
+                    attempts++;
+                } while (attempts < maxAttempts);
+            } else {
+                // Find non-overlapping position for single blessings
+                let attempts = 0;
+                const maxAttempts = 20;
+
+                do {
+                    const maxX = Math.max(0, window.innerWidth - cardWidth);
+                    randomX = Math.random() * maxX;
+                    // Leave space at bottom for buttons (at least 120px from bottom)
+                    const bottomMargin = 120;
+                    randomY = Math.max(0, window.innerHeight - bottomMargin);
+
+                    // Check if this position overlaps with existing cards
+                    let overlaps = false;
+                    for (let i = 0; i < existingCards.length; i++) {
+                        const existingCard = existingCards[i];
+                        const existingRect = existingCard.getBoundingClientRect();
+                        const newRect = {
+                            left: randomX,
+                            top: randomY,
+                            right: randomX + cardWidth,
+                            bottom: randomY + cardHeight
+                        };
+
+                        // Check if rectangles overlap
+                        if (!(newRect.right < existingRect.left - margin ||
+                              newRect.left > existingRect.right + margin ||
+                              newRect.bottom < existingRect.top - margin ||
+                              newRect.top > existingRect.bottom + margin)) {
+                            overlaps = true;
+                            break;
+                        }
+                    }
+
+                    if (!overlaps) break;
+                    attempts++;
+                } while (attempts < maxAttempts);
+            }
+
+            const randomRotation = (Math.random() - 0.5) * 20 + 'deg';
+
+            card.style.left = randomX + 'px';
+            card.style.top = randomY + 'px';
+            // Set z-index to prevent overlapping (newer cards on top)
+            card.style.zIndex = 1000 + blessingCount;
+            card.style.setProperty('--random-rotation', randomRotation);
+
+            // Click event
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showClickFeedback(e.clientX, e.clientY);
+                userStats.clickCount++;
+                if (currentUserData) {
+                    currentUserData.clickCount++;
+                }
+                blessingCount++;
+
+                if (blessingCount === 66 && !easterEgg66Shown) {
+                    showEasterEgg('🎉 彩蛋时刻', '你已经收到了 66 条好运！今天稳了～');
+                    easterEgg66Shown = true;
+                }
+            });
+
+            document.body.appendChild(card);
+            userStats.blessingCount++;
+            blessingCount++;
+            userStats.blessingTimes.push(Date.now());
+
+            // Update global stats
+            globalStats.totalBlessings++;
+            saveGlobalStats();
+
+            // Remove after animation using requestAnimationFrame for better compatibility
+            const removeCard = () => {
+                if (card && card.parentNode) {
+                    card.parentNode.removeChild(card);
+                }
+            };
+
+            // Use setTimeout as a fallback, but wrapped in a try-catch
+            try {
+                setTimeout(removeCard, 6000);
+            } catch (error) {
+                console.log('Error removing card:', error);
+            }
+        }
+
+        // Create Blessing Rain (10 blessings at once with distributed positions)
+        function createBlessingRain() {
+            // Generate distributed X positions for 10 blessings to avoid overlapping
+            const positions = [];
+            const blessingCount = 10;
+            const cardWidth = 260; // Same as in createBlessing
+            const margin = 20; // Minimum margin between cards
+            const bottomMargin = 120; // Leave space for buttons
+
+            // Calculate grid positions based on screen width
+            const isLandscape = window.innerWidth > window.innerHeight;
+            const cols = isLandscape ? 5 : 3;
+
+            // Calculate horizontal spacing
+            const availableWidth = window.innerWidth - (cols * cardWidth) - (margin * (cols + 1));
+            const spacingX = availableWidth / (cols + 1);
+
+            // Generate grid X positions
+            for (let col = 0; col < cols; col++) {
+                if (positions.length < blessingCount) {
+                    const x = Math.max(margin, col * (cardWidth + spacingX) + spacingX + (Math.random() * 20 - 10));
+                    positions.push({ x, y: window.innerHeight - bottomMargin }); // All start from safe bottom area
+                }
+            }
+
+            // If we need more positions, add more rows
+            for (let col = 0; col < cols && positions.length < blessingCount; col++) {
+                const x = Math.max(margin, col * (cardWidth + spacingX) + spacingX + (Math.random() * 20 - 10));
+                positions.push({ x, y: window.innerHeight - bottomMargin }); // All start from safe bottom area
+            }
+
+            // Shuffle positions to add randomness
+            for (let i = positions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [positions[i], positions[j]] = [positions[j], positions[i]];
+            }
+
+            // Create blessings at distributed positions
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createBlessing(positions[i]);
+                }, i * 50);
+            }
+        }
+
+        // Show Click Feedback
+        function showClickFeedback(x, y) {
+            const feedback = document.createElement('div');
+            feedback.className = 'click-feedback';
+            feedback.textContent = Math.random() > 0.5 ? '好运＋1' : '暖意＋1';
+            feedback.style.left = x + 'px';
+            feedback.style.top = y + 'px';
+
+            document.body.appendChild(feedback);
+
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.parentNode.removeChild(feedback);
+                }
+            }, 1000);
+        }
+
+        // Easter Egg for Blessing Rain
+        function triggerBlessingEasterEgg() {
+            if (userStats.rainCount === 5 && !easterEggLongShown) {
+                showEasterEgg('🌟 福气满满', '你的福气正在汇聚！继续领取更多温暖吧～');
+            }
+        }
+
+        // Show Easter Egg
+        function showEasterEgg(title, message) {
+            document.getElementById('eggTitle').textContent = title;
+            document.getElementById('eggMessage').textContent = message;
+            document.getElementById('easterEgg').style.display = 'block';
+        }
+
+        // Close Easter Egg
+        function closeEasterEgg() {
+            document.getElementById('easterEgg').style.display = 'none';
+        }
+
+        // Create Snowflakes
+        function createSnowflakes() {
+            setInterval(() => {
+                if (document.querySelectorAll('.snowflake').length < 50) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.innerHTML = '❄️';
+                    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+                    snowflake.style.animationDuration = 3 + Math.random() * 4 + 's';
+                    snowflake.style.opacity = 0.3 + Math.random() * 0.4;
+
+                    document.body.appendChild(snowflake);
+
+                    setTimeout(() => {
+                        if (snowflake.parentNode) {
+                            snowflake.parentNode.removeChild(snowflake);
+                        }
+                    }, 7000);
+                }
+            }, 200);
+        }
+
+        // Background Music
+        function playBackgroundMusic() {
+            console.log('🎵 Playing background music...');
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                audio.volume = 0.5; // 设置音量为50%
+                audio.play().catch(error => {
+                    console.log('音频播放失败:', error);
+                });
+            }
+        }
+
+        // Stay Time Tracking
+        function startStayTimeTracking() {
+            stayTimeInterval = setInterval(() => {
+                if (userStats.startTime) {
+                    const elapsed = Math.floor((Date.now() - userStats.startTime) / 1000);
+                    document.getElementById('statTime').textContent = elapsed + 's';
+                    document.getElementById('statClicks').textContent = userStats.clickCount;
+                    document.getElementById('statRains').textContent = userStats.rainCount;
+                    document.getElementById('statBlessings').textContent = userStats.blessingCount;
+
+                    // Update current user data
+                    if (currentUserData) {
+                        currentUserData.stayTime = elapsed;
+                        currentUserData.blessingCount = userStats.blessingCount;
+                    }
+
+                    // Long stay easter egg (3 minutes 48 seconds = 228 seconds)
+                    if (elapsed >= 228 && !easterEggLongShown) {
+                        showEasterEgg('🎵 特殊彩蛋', '谢谢你停留3分钟48秒，这首我用AI做的音乐献给屏幕前的你！小彩蛋啦！宰治再次祝你在这个冬天总是收获暖暖，烦恼少一些，幸福常伴你身边！');
+                        easterEggLongShown = true;
+                    }
+                }
+
+                // Update global stats
+                document.getElementById('statTotalUsers').textContent = globalStats.users.length;
+                document.getElementById('statTotalTime').textContent = globalStats.totalTime + 's';
+                document.getElementById('statTotalClicks').textContent = globalStats.totalClicks;
+                document.getElementById('statTotalRains').textContent = globalStats.totalRains;
+                document.getElementById('statTotalBlessings').textContent = globalStats.totalBlessings;
+
+                // Update user list
+                updateUserList();
+            }, 1000);
+        }
+
+        // Update User List Display
+        function updateUserList() {
+            const userListContainer = document.getElementById('userList');
+            const userCountSpan = document.getElementById('userCount');
+
+            if (!userListContainer) return;
+
+            userCountSpan.textContent = globalStats.users.length;
+
+            if (globalStats.users.length === 0) {
+                userListContainer.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-size: 11px; text-align: center;">暂无用户数据</div>';
+                return;
+            }
+
+            // Show last 10 users (reverse order to show newest first)
+            const recentUsers = globalStats.users.slice(-10).reverse();
+            userListContainer.innerHTML = recentUsers.map(user => {
+                const minutes = Math.floor(user.stayTime / 60);
+                const seconds = user.stayTime % 60;
+                return `
+                    <div class="user-item">
+                        <div class="user-nickname">${user.nickname}</div>
+                        <div class="user-time">${user.enterTime}</div>
+                        <div class="user-stats">
+                            停留: ${minutes}分${seconds}秒 |
+                            点击: ${user.clickCount} |
+                            爆发: ${user.rainCount} |
+                            祝福: ${user.blessingCount}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Recalculate total stats
+            recalculateTotalStats();
+        }
+
+        // Save Current User Data
+        async function saveCurrentUserData() {
+            if (userStats.startTime && currentUserData) {
+                const elapsed = Math.floor((Date.now() - userStats.startTime) / 1000);
+                currentUserData.stayTime = elapsed;
+                currentUserData.blessingCount = userStats.blessingCount;
+
+                // Check if user data already exists
+                const existingIndex = globalStats.users.findIndex(u => u.id === currentUserData.id);
+                if (existingIndex !== -1) {
+                    // Update existing user data
+                    globalStats.users[existingIndex] = {...currentUserData};
+                } else {
+                    // Add new user data
+                    globalStats.users.push({...currentUserData});
+                }
+
+                // Recalculate total stats from all users
+                recalculateTotalStats();
+                await saveGlobalStats();
+            }
+        }
+
+        // Save Global Stats
+        async function saveGlobalStats() {
+            // Save to localStorage
+            localStorage.setItem('globalStats', JSON.stringify(globalStats));
+
+            // Save to cloud if enabled
+            if (USE_CLOUD_STORAGE && CLOUD_STORAGE_URL && CLOUD_STORAGE_URL !== 'YOUR_API_ENDPOINT_HERE') {
+                try {
+                    await fetch(CLOUD_STORAGE_URL + '/save', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(globalStats)
+                    });
+                } catch (error) {
+                    console.error('Failed to save to cloud:', error);
+                }
+            }
+        }
+
+        // Load Global Stats from cloud or localStorage
+        async function loadGlobalStats() {
+            // Try to load from cloud first if enabled
+            if (USE_CLOUD_STORAGE && CLOUD_STORAGE_URL && CLOUD_STORAGE_URL !== 'YOUR_API_ENDPOINT_HERE') {
+                try {
+                    const response = await fetch(CLOUD_STORAGE_URL + '/load');
+                    if (response.ok) {
+                        const cloudData = await response.json();
+                        if (cloudData && cloudData.users) {
+                            globalStats = cloudData;
+                            recalculateTotalStats();
+                            updateTotalStatsDisplay();
+                            updateUserList();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Failed to load from cloud:', error);
+                }
+            }
+
+            // Fallback to localStorage
+            const savedData = localStorage.getItem('globalStats');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    if (parsedData && parsedData.users) {
+                        globalStats = parsedData;
+                        recalculateTotalStats();
+                        updateTotalStatsDisplay();
+                        updateUserList();
+                    }
+                } catch (error) {
+                    console.error('Failed to parse local data:', error);
+                }
+            }
+        }
+
+        // Export to Excel (CSV format with UTF-8 BOM for Excel compatibility)
+        function exportToExcel() {
+            if (globalStats.users.length === 0) {
+                alert('暂无数据可导出！');
+                return;
+            }
+
+            try {
+                // Create CSV content with proper formatting
+                const headers = ['序号', '昵称', '进入时间', '停留时间(秒)', '停留时间(分:秒)', '点击次数', '爆发次数', '祝福条数'];
+                const rows = [];
+
+                // Add header row
+                rows.push(headers);
+
+                // Add user data rows
+                globalStats.users.forEach((user, index) => {
+                    const minutes = Math.floor((user.stayTime || 0) / 60);
+                    const seconds = (user.stayTime || 0) % 60;
+                    const row = [
+                        index + 1,
+                        user.nickname || '未输入',
+                        user.enterTime || new Date().toLocaleString('zh-CN'),
+                        user.stayTime || 0,
+                        `${minutes}:${seconds.toString().padStart(2, '0')}`,
+                        user.clickCount || 0,
+                        user.rainCount || 0,
+                        user.blessingCount || 0
+                    ];
+                    rows.push(row);
+                });
+
+                // Add empty row for spacing
+                rows.push([]);
+
+                // Add summary row
+                const totalMinutes = Math.floor(globalStats.totalTime / 60);
+                const totalSeconds = globalStats.totalTime % 60;
+                rows.push([
+                    '总计',
+                    `${globalStats.users.length}人`,
+                    '',
+                    globalStats.totalTime,
+                    `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`,
+                    globalStats.totalClicks,
+                    globalStats.totalRains,
+                    globalStats.totalBlessings
+                ]);
+
+                // Add empty row
+                rows.push([]);
+
+                // Add export info
+                rows.push(['导出时间', new Date().toLocaleString('zh-CN'), '', '', '', '', '', '']);
+                rows.push(['数据来源', '冬天祝福（宰治）', '', '', '', '', '', '']);
+
+                // Format data for CSV (escape quotes and wrap in quotes)
+                const csvLines = rows.map(row => {
+                    return row.map(cell => {
+                        // Convert to string and escape double quotes
+                        const str = String(cell || '');
+                        const escaped = str.replace(/"/g, '""');
+                        return `"${escaped}"`;
+                    }).join(',');
+                });
+
+                // Add UTF-8 BOM for Excel compatibility
+                const BOM = '\uFEFF';
+                const csvContent = BOM + csvLines.join('\n');
+
+                // Create download link
+                const fileName = `冬天祝福数据_${new Date().toLocaleDateString('zh-CN').replace(/\//g, '')}.csv`;
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = fileName;
+                link.style.display = 'none';
+
+                // Trigger download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Cleanup
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+
+                alert('✅ 数据导出成功！\n\n文件已保存为CSV格式，\n可用Excel或WPS直接打开。\n\n文件名：' + fileName);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ 导出失败：' + error.message);
+            }
+        }
+
+        // Admin Login
+        function showAdminLogin() {
+            const password = prompt('请输入管理员密码:');
+            if (password === '1323701508wl') {
+                document.getElementById('adminPanel').style.display = 'block';
+                // Refresh data when panel opens
+                setTimeout(() => {
+                    updateUserList();
+                    document.getElementById('statTotalUsers').textContent = globalStats.users.length;
+                    document.getElementById('statTotalTime').textContent = globalStats.totalTime + 's';
+                    document.getElementById('statTotalClicks').textContent = globalStats.totalClicks;
+                    document.getElementById('statTotalRains').textContent = globalStats.totalRains;
+                    document.getElementById('statTotalBlessings').textContent = globalStats.totalBlessings;
+                }, 100);
+            } else if (password !== null) {
+                alert('密码错误！');
+            }
+        }
+
+        // Update Personalized Blessings
+        function updatePersonalizedBlessings() {
+            if (urlName) {
+                // Modify blessing templates to include the name
+                for (let i = 0; i < blessings.length; i++) {
+                    if (!blessings[i].includes('，')) {
+                        blessings[i] = urlName + '，' + blessings[i];
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
